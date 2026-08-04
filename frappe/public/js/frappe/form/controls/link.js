@@ -200,7 +200,16 @@ frappe.ui.form.ControlLink = class ControlLink extends frappe.ui.form.ControlDat
 		}
 
 		// partially entered name field
-		frappe.route_options.name_field = this.get_label_value();
+		let val = this.last_search_text || this.get_label_value() || "";
+		if (
+			typeof val === "string" &&
+			(val.startsWith(__("Create a new")) ||
+				val.includes("__link_option") ||
+				val.startsWith("Create a new"))
+		) {
+			val = "";
+		}
+		frappe.route_options.name_field = val;
 
 		// reference to calling link
 		frappe._from_link = {
@@ -444,6 +453,7 @@ frappe.ui.form.ControlLink = class ControlLink extends frappe.ui.form.ControlDat
 
 	on_input(e) {
 		const term = e ? e.target.value : this.$input.val();
+		this.last_search_text = term;
 		const args = this.get_search_args(term);
 		if (!args) return;
 

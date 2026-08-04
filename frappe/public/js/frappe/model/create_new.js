@@ -44,13 +44,45 @@ $.extend(frappe.model, {
 		// set the name if called from a link field
 		if (frappe.route_options && frappe.route_options.name_field) {
 			var meta = frappe.get_meta(doctype);
+			var name_field_val = frappe.route_options.name_field;
+			var autoname_lower = meta.autoname ? meta.autoname.toLowerCase() : "";
+			var target_field = null;
+
 			// set title field / name as name
-			if (meta.autoname && meta.autoname.indexOf("field:") !== -1) {
-				doc[meta.autoname.substr(6)] = frappe.route_options.name_field;
-			} else if (meta.autoname && meta.autoname === "prompt") {
-				doc.__newname = frappe.route_options.name_field;
-			} else if (meta.title_field) {
-				doc[meta.title_field] = frappe.route_options.name_field;
+			if (autoname_lower && autoname_lower.indexOf("field:") !== -1) {
+				target_field = meta.autoname.substr(meta.autoname.toLowerCase().indexOf("field:") + 6).trim();
+			} else if (autoname_lower && autoname_lower === "prompt") {
+				target_field = "__newname";
+			} else if (meta.title_field && frappe.meta.has_field(doctype, meta.title_field)) {
+				target_field = meta.title_field;
+			} else {
+				var scrubbed = frappe.scrub(doctype);
+				if (frappe.meta.has_field(doctype, scrubbed)) {
+					target_field = scrubbed;
+				} else if (frappe.meta.has_field(doctype, scrubbed + "_name")) {
+					target_field = scrubbed + "_name";
+				} else {
+					var candidate = ["title", "label", "name"].find(function (f) {
+						return frappe.meta.has_field(doctype, f);
+					});
+					if (candidate) {
+						target_field = candidate;
+					} else if (meta.fields) {
+						var first_data_field = meta.fields.find(function (df) {
+							return ["Data", "Link", "Select"].includes(df.fieldtype) && !df.read_only && !df.hidden;
+						});
+						if (first_data_field) {
+							target_field = first_data_field.fieldname;
+						}
+					}
+				}
+			}
+
+			if (target_field) {
+				doc[target_field] = name_field_val;
+				if (target_field !== "__newname") {
+					frappe.route_options[target_field] = name_field_val;
+				}
 			}
 
 			delete frappe.route_options.name_field;
