@@ -48,18 +48,24 @@ class BaseTimeline {
 		this.timeline_items = [];
 		this.doc_info = (this.frm && this.frm.get_docinfo()) || {};
 		let response = this.prepare_timeline_contents();
-		if (response instanceof Promise) {
-			response.then(() => {
-				this.timeline_items.sort(
-					(item1, item2) => new Date(item2.creation) - new Date(item1.creation)
-				);
-				this.timeline_items.forEach(this.add_timeline_item.bind(this));
-			});
-		} else {
+		let on_complete = () => {
 			this.timeline_items.sort(
 				(item1, item2) => new Date(item2.creation) - new Date(item1.creation)
 			);
 			this.timeline_items.forEach(this.add_timeline_item.bind(this));
+			if (this.frm) {
+				this.frm.timeline_rendered = true;
+				if (window.location.hash || frappe.route_hash) {
+					requestAnimationFrame(() => {
+						this.frm && this.frm.scroll_to_element();
+					});
+				}
+			}
+		};
+		if (response instanceof Promise) {
+			response.then(on_complete);
+		} else {
+			on_complete();
 		}
 	}
 

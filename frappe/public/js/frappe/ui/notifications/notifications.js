@@ -430,6 +430,9 @@ class NotificationsView extends BaseNotificationsView {
 			}`;
 			return `${form_link}#${anchor}`;
 		}
+		if (notification_doc.type === "Mention" && notification_doc.document_type && notification_doc.document_name) {
+			return `${form_link}#timeline`;
+		}
 		return form_link;
 	}
 

@@ -386,9 +386,11 @@ Object.assign(frappe.utils, {
 				);
 			}
 		};
-		// already there
+
+		highlight();
+
 		if (scroll_top == element_to_be_scrolled.scrollTop()) {
-			return highlight();
+			return;
 		}
 
 		if (animate) {
@@ -398,7 +400,6 @@ Object.assign(frappe.utils, {
 				})
 				.promise()
 				.then(() => {
-					highlight();
 					callback && callback();
 				});
 		} else {

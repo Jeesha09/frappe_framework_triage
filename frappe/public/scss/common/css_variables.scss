@@ -30,7 +30,7 @@ $disabled-input-height: 22px;
 
 	--shadow-inset: inset 0px -1px 0px var(--gray-300);
 
-	--highlight-shadow: 1px 1px 10px var(--blue-50), 0px 0px 4px var(--blue-600);
+	--highlight-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1), 0px 1px 4px rgba(0, 0, 0, 0.06);
 
 	// code block
 	--code-block-bg: var(--gray-900);

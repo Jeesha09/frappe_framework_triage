@@ -1732,13 +1732,27 @@ frappe.ui.form.Form = class FrappeForm {
 				url.searchParams.delete("scroll_to");
 				history.replaceState(null, null, url);
 			}
-		} else if (window.location.hash) {
-			const id = decodeURIComponent(window.location.hash.substring(1));
-			const element = id && document.getElementById(id);
-			if (element) {
-				frappe.utils.scroll_to(element, true, 200, null, null, true);
-			} else if (id) {
-				this.scroll_to_field(id) && history.replaceState(null, null, " ");
+		} else {
+			const hash = window.location.hash || frappe.route_hash;
+			if (hash) {
+				const id = decodeURIComponent(hash.substring(1));
+				const element = id && document.getElementById(id);
+				const $container = $(".main-section").length ? $(".main-section") : $("html, body");
+				if (element) {
+					frappe.utils.scroll_to(element, true, 15, $container, null, true);
+					delete frappe.route_hash;
+				} else if (id) {
+					if (this.scroll_to_field(id)) {
+						delete frappe.route_hash;
+						history.replaceState(null, null, " ");
+					} else if (id === "timeline" || (this.timeline_rendered && (id.startsWith("comment-") || id.startsWith("communication-")))) {
+						const timeline_el = this.footer && this.footer.wrapper.find(".timeline")[0];
+						if (timeline_el) {
+							frappe.utils.scroll_to(timeline_el, true, 15, $container, null, true);
+							delete frappe.route_hash;
+						}
+					}
+				}
 			}
 		}
 	}
