@@ -35,6 +35,7 @@ class ToDo(Document):
 		role: DF.Link | None
 		sender: DF.Data | None
 		status: DF.Literal["Open", "Closed", "Cancelled"]
+		subject: DF.Data | None
 	# end: auto-generated types
 
 	DocType = "ToDo"
