@@ -38,6 +38,7 @@ class DocField(Document):
 			"Attach Image",
 			"Attachment Gallery",
 			"Barcode",
+			"QRCode",
 			"Button",
 			"Check",
 			"Code",

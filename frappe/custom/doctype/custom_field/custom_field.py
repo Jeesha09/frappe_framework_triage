@@ -46,6 +46,7 @@ class CustomField(Document):
 			"Attach Image",
 			"Attachment Gallery",
 			"Barcode",
+			"QRCode",
 			"Button",
 			"Check",
 			"Code",

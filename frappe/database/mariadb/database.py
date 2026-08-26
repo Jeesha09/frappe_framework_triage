@@ -209,6 +209,7 @@ class MariaDBDatabase(MariaDBConnectionUtil, MariaDBExceptionUtil, Database):
 			"Signature": ("longtext", ""),
 			"Color": ("varchar", self.VARCHAR_LEN),
 			"Barcode": ("longtext", ""),
+			"QRCode": ("text", ""),
 			"Geolocation": ("longtext", ""),
 			"Duration": ("decimal", "21,9"),
 			"Icon": ("varchar", self.VARCHAR_LEN),

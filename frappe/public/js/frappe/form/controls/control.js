@@ -33,6 +33,7 @@ import "./html_editor";
 import "./heading";
 import "./autocomplete";
 import "./barcode";
+import "./qrcode";
 import "./geolocation";
 import "./multiselect";
 import "./multicheck";
