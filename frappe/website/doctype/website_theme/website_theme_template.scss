@@ -15,7 +15,7 @@ $font-family-sans-serif: "{{ google_font }}", "InterVariable", "Inter", -apple-s
 
 {% if primary_color %}$primary: {{ frappe.db.get_value('Color', primary_color, 'color') }};{% endif -%}
 {% if dark_color %}$dark: {{ frappe.db.get_value('Color', dark_color, 'color') }};{% endif -%}
-{% if text_color %}$body-text-color: {{ frappe.db.get_value('Color', text_color, 'color') }};{% endif -%}
+{% if text_color %}$body-color: {{ frappe.db.get_value('Color', text_color, 'color') }};{% endif -%}
 {% if background_color %}$body-bg: {{ frappe.db.get_value('Color', background_color, 'color') }};{% endif -%}
 
 $enable-shadows: {{ button_shadows and "true" or "false" }};
@@ -48,8 +48,8 @@ body {
 	--bg-color: #{$body-bg};
 	{% endif -%}
 	{% if text_color %}
-	--text-color: #{$body-text-color};
-	--text-light: #{$body-text-color};
+	--text-color: #{$body-color};
+	--text-light: #{$body-color};
 	{% endif -%}
 	{% if not button_rounded_corners %}
 	--radius-sm: 0px;
